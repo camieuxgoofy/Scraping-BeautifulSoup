@@ -1,14 +1,21 @@
 from bs4 import BeautifulSoup
+import requests
 
-dokumen = '''
+page = requests.get("https://nekopoi.care")
+soup = BeautifulSoup(page.content, "html5lib")
+print(soup.prettify())
+if page.status_code == 200:
+    div = soup.find(id="eropost")
+
+htmltxt = """
 <html>
 <head>
     <title>Scrapping</title>
 </head>
 
 <body>
-    <p class="cover-images">Cover Images</p>
-    <p class="title">Title</p>
+<p class="cover-images">Cover Images</p>
+<p class="title">Title</p>
 <p class="date">Date</p>
 <p class="synopsis">Synopsis</p>
 <p class="tags">Genre</p>
@@ -16,24 +23,18 @@ dokumen = '''
 </body>
 
 </html>
-'''
+"""
 
-html_soup = BeautifulSoup(dokumen, 'html.parser')
+eropost = div.findAll("div", attrs={"class": "eropost"})
+erofpost = []
+for row in eropost:
+    erofpost = {}
+    erofpost["cover"] = row.img("src")
+    erofpost["title"] = row.eroinfo.h2.text.replace["\n", ""]
+    erofpost["time"] = row.eroinfo.span.text.replace("\n", "")
+    eropost.append(erofpost)
 
-cover-images = html_soup.find('p', class_='cover-images')
-title = html_soup.find('p', class_='title')
-date = html_soup.find('p', class_='date')
-synopsis = html_soup.find('p', class_='synopsis')
-tags = html_soup.find('p', class_='tags')
-url-downloads = html_soup.find('p', class_='url-dowbnloads')
+import json
+import pprint
 
-
-print(cover-images)
-print(title)
-print(date)
-print(synopsis)
-print(tags)
-print(url-downloads)
-
-content = html_soup.find_all('p')
-print(content)
+pprint.pprint(eropost)

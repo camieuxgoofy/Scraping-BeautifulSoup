@@ -1,2 +1,2 @@
 # Scraping-BeautifulSoup
-Web Scraping using BeautifulSoup
+Web Scraping from blocked site using BeautifulSoup
